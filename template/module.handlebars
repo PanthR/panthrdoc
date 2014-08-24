@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="doc.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <title>{{module.name}}</title>
+  </head>
+  <body>
+    <div id="header">
+    <h1>Documentation for module <code>{{module.name}}</code>
+      {{#if module.version}}<span class="version">(v{{module.version}})</span>{{/if}}
+      </h1>
+    </div>
+    <div id="sidebar">
+      <ul>
+        {{#each contents}}{{#if fullName}}
+        <a href="#{{makeLink fullName}}"><li><code>{{makeShort fullName}}</code></li></a>
+        {{/if}}{{/each}}
+      </ul>
+    </div>
+    <div id="main">
+      <div class="moduleInfo">
+        <h2>Module <code>{{module.name}}</code></h2>
+        <p>Author(s): {{{authorLinks module.author}}}<p>
+        {{{module.description}}}
+      </div>
+      {{#each contents}}
+      <div>
+        {{#if fullName}}<h4 id="{{makeLink fullName}}"><code>{{makeText fullName}}</code></h4>{{/if}}
+        {{{description}}}
+      </div>
+      {{/each}}
+    </div>
+  </body>
+</html>

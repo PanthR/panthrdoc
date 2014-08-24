@@ -1,0 +1,9 @@
+{
+   "opts": {
+      "template": "./template"
+   },
+   "plugins": [
+      "plugins/markdown",
+      "./panthrdoc"
+   ]
+}
