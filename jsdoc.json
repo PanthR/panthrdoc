@@ -1,6 +1,11 @@
 {
    "opts": {
-      "template": "./template"
+      "template": "./template",
+      "recurse": true
+   },
+   "source": {
+       "includePattern": ".+\\.js$",
+       "excludePattern": "(node_modules|test)\/"
    },
    "plugins": [
       "plugins/markdown",
