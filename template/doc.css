@@ -93,7 +93,7 @@ h1 code, h2 code {
    margin-bottom: 0.3em;
 }
 #main div h4 ~ p {
-   padding-left: 2em;
+   padding-left: 1em;
 }
 #main p code {
    background-color: #DDD;
@@ -122,6 +122,11 @@ pre {
    background-color: #DDD;
    overflow-x: scroll;
    padding: 0.2em;
+}
+
+ol, ul {
+   padding-left: 3em;
+   padding-bottom: 0.8em;
 }
 
 /* links */
