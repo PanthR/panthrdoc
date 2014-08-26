@@ -42,10 +42,9 @@ exports.publish = function(data, opts) {
    Object.keys(modules).forEach(function(module) {
          var fileName = path.normalize('./docs/' + module + '.html');
          fs.writeFileSync(fileName, template(modules[module]), 'utf8');
-         console.log("Creating: ", fileName);
+         console.log("Creating file: ", fileName);
    });
    function processEntry(entry) {
-      // console.log(entry);
       var targetModule;
       if (entry.kind === 'module') {
          currentModule = entry.name;

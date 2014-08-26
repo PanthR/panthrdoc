@@ -8,7 +8,6 @@ exports.handlers = {
       e.source = e.source.replace(/(\/\*\*(?:.|\n)*?)\*\/\s*\n(.*)$/mg, function(s, comment, code) {
          var commentTags = processTags(comment);
          var procCode = processCode(code);
-         // console.log(commentTags, procCode)
          return comment + '\n' + addTags(commentTags, procCode) + ' */\n' + code;
       });
    }
@@ -47,7 +46,7 @@ function processCode(s) {
    var match;
    if (constr.test(s)) {
       match = s.match(constr);
-      return { type: 'constructor', name: match[1], fullName: match[1] + match[2], static: true };
+      return { type: 'class', name: match[1], fullName: match[1] + match[2], static: true };
    } else if (method.test(s)) {
       match = s.match(method);
       return {
@@ -73,7 +72,6 @@ function addTags(existing, newValues) {
    var typeTags = ['class', 'module', 'method', 'member', 'function', 'func', 'kind'];
    var scopeTags = ['static', 'inner', 'instance', 'global'];
    var result = addTag('fullName', newValues.fullName);
-
    if (!hasAny(existing, typeTags)) { result += addTag(newValues.type, newValues.name); }
    if (!hasAny(existing, scopeTags)) { result += addTag(newValues.isStatic ? 'static' : 'instance', null); }
    return result;
