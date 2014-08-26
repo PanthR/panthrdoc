@@ -47,7 +47,7 @@ exports.publish = function(data, opts) {
    function processEntry(entry) {
       // console.log(entry);
       var targetModule;
-      if (entry.kind === 'module' || entry.kind === 'class') {
+      if (entry.kind === 'module') {
          currentModule = entry.name;
          if (!modules[currentModule]) {
             modules[currentModule] = { module: entry, contents: [] };
