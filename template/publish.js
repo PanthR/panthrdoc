@@ -49,7 +49,7 @@ exports.publish = function(data, opts) {
       if (entry.kind === 'module') {
          currentModule = entry.name;
          if (!modules[currentModule]) {
-            modules[currentModule] = { module: entry, contents: [] };
+            modules[currentModule] = { module: entry, contents: [], allModules: modules };
             entries[makeShort(currentModule)] = true;
          }
       } else {

@@ -11,11 +11,22 @@
       </h1>
     </div>
     <div id="sidebar">
+      <div>
+        <h3>Module Index</h3>
+      <ul>
+        {{#each allModules}}
+        <a href="{{module.name}}.html"><li><code>{{module.name}}</code></li></a>
+        {{/each}}
+      </ul>
+      </div>
+      <div>
+        <h3>Contents</h3>
       <ul>
         {{#each contents}}{{#if fullName}}
         <a href="#{{makeLink fullName}}"><li><code>{{makeShort fullName}}</code></li></a>
         {{/if}}{{/each}}
       </ul>
+      </div>
     </div>
     <div id="main">
       <div class="moduleInfo">
