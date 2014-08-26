@@ -118,6 +118,12 @@ p {
    border-bottom: 1px dotted #007A79;
 }
 
+pre {
+   background-color: #DDD;
+   overflow-x: scroll;
+   padding: 0.2em;
+}
+
 /* links */
 a {
    text-decoration: none;
