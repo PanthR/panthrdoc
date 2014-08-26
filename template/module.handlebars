@@ -22,7 +22,7 @@
       <div>
         <h3>Contents</h3>
       <ul>
-        {{#each contents}}{{#if fullName}}
+        {{#each sortedContents}}{{#if fullName}}
         <a href="#{{makeLink fullName}}"><li><code>{{makeShort fullName}}</code></li></a>
         {{/if}}{{/each}}
       </ul>

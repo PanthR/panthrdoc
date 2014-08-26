@@ -37,6 +37,24 @@ exports.publish = function(data, opts) {
             return s;
          });
       });
+      modules[module].sortedContents = modules[module].contents.filter(
+         function(entry) { return entry.fullName != null; }
+      ).sort(
+         function(a, b) {
+            function isClass(str) { return /\.[A-Z]/.test(str); }
+            function isInstance(str) { return /\#\w|\.prototype\./.test(str); }
+            a = a.fullName.replace(/\(.*/, '');
+            b = b.fullName.replace(/\(.*/, '');
+            if (a.indexOf(b) === 0) { return 1; }
+            if (b.indexOf(a) === 0) { return -1; }
+            var res = a < b ? -1 : 1;
+            if (isClass(a)) { res += -100; }
+            if (isClass(b)) { res += 100; }
+            if (isInstance(a)) { res += 50; }
+            if (isInstance(b)) { res -= 50; }
+            return res;
+         }
+      );
    });
    
    Object.keys(modules).forEach(function(module) {
