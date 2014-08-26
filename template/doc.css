@@ -103,7 +103,7 @@ h1 code, h2 code {
 }
 #main div:hover {
 /*   background-color: #EEE;*/
-   border-right: 2px solid #AAA;
+   border-right: 3px solid #777;
 }
 #main div h4 {
    margin-bottom: 0.3em;
