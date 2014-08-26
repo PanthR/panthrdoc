@@ -49,8 +49,10 @@ exports.publish = function(data, opts) {
       var targetModule;
       if (entry.kind === 'module' || entry.kind === 'class') {
          currentModule = entry.name;
-         modules[currentModule] = { module: entry, contents: [] };
-         entries[makeShort(currentModule)] = true;
+         if (!modules[currentModule]) {
+            modules[currentModule] = { module: entry, contents: [] };
+            entries[makeShort(currentModule)] = true;
+         }
       } else {
          targetModule = (entry.memberof || currentModule).replace('module:', '');
          if (modules[targetModule] == null) {
