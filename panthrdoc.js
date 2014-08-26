@@ -1,5 +1,9 @@
 var docEntries = {};
 exports.handlers = {
+   parseBegin: function(e) {
+      e.sourcefiles = reorderFiles(e.sourcefiles);
+      return e;
+   },
    beforeParse: function(e) {
       e.source = e.source.replace(/(\/\*\*(?:.|\n)*?)\*\/\s*\n(\s*\w+.*)$/mg, function(s, comment, code) {
          var commentTags = processTags(comment);
@@ -16,6 +20,15 @@ exports.defineTags = function(dictionary) {
    });
 }
 
+function reorderFiles(arr) {
+   return arr.sort(function(a, b) {
+     function strip(s) { return s.replace(/\.js$/, ''); }
+     a = strip(a); b = strip(b);
+     if (a.indexOf(b) === 0) { return 1; }
+     if (b.indexOf(a) === 0) { return -1; }
+     return a < b ? -1 : 1;
+   });
+}
 
 function processTags(s) {
    var tags = {};
