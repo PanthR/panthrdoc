@@ -87,7 +87,8 @@ h1 code, h2 code {
    width: 80%;
 }
 #main div:hover {
-   background-color: #EEE;
+/*   background-color: #EEE;*/
+   border-right: 2px solid #AAA;
 }
 #main div h4 {
    margin-bottom: 0.3em;
@@ -119,9 +120,10 @@ p {
 }
 
 pre {
-   background-color: #DDD;
+   background-color: #EEE;
    overflow-x: scroll;
    padding: 0.2em;
+   font-size: 90%;
 }
 
 ol, ul {
