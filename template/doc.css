@@ -112,11 +112,12 @@ h1 code, h2 code {
    padding-left: 1em;
 }
 #main p code {
-   background-color: #DDD;
-   padding: 0.1em 0.2em;
+   background-color: #F7F7F7;
+   padding: 0 0.1em;
 }
 #main p a code {
-   background-color: #FFF;
+   background-color: #F7F7F7;
+   border-bottom: 1px solid #AAA;
    color: #350001;
 }
 
