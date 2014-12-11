@@ -16,7 +16,7 @@
   "homepage": "https://github.com/PanthR/panthrdoc",
   "dependencies": {
     "handlebars": "^2.0.0-alpha.4",
-    "jsdoc": "^3.3.0-alpha9",
+    "jsdoc": "*",
     "marked": "^0.3.2"
   }
 }
