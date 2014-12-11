@@ -47,6 +47,7 @@ function processCode(s) {
    var constr = /^\s*function\s+(\w+)(\(.*\))/;
    var method = /^\s*([\w\.]+)\s*\=\s*function\s*(?:\w*)(\([^\)]*\))/;
    var member = /^\s*([\w\.]+)\s*\=/;
+   var loader = /^\s*loader\.add(Class|Instance|Module)Method\(\'([\w\.]+)\'\,\s*\'(\w+)\'\,\s*function\s*\w*(\([^\)]*\))/;
    var match;
    if (constr.test(s)) {
       match = s.match(constr);
@@ -66,6 +67,14 @@ function processCode(s) {
          name: match[1].match(/\w+$/)[0],
          fullName: match[1],
          isStatic: isStatic(match[1])
+      }
+   } else if (loader.test(s)) {
+      match = s.match(loader);
+      return {
+         type: 'method',
+         name: match[3],
+         fullName: match[2] + '.' + match[3] + match[4],
+         isStatic: !(match[1] === 'Instance')
       }
    }
    return undefined;
