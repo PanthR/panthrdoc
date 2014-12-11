@@ -74,7 +74,8 @@ function processCode(s) {
          type: 'method',
          name: match[3],
          fullName: match[2] + '.' + match[3] + match[4],
-         isStatic: !(match[1] === 'Instance')
+         isStatic: !(match[1] === 'Instance'),
+         memberof: 'module:' + match[2]
       }
    }
    return undefined;
@@ -87,6 +88,7 @@ function addTags(existing, newValues) {
    var result = addTag('fullName', newValues.fullName);
    if (!hasAny(existing, typeTags)) { result += addTag(newValues.type, newValues.name); }
    if (!hasAny(existing, scopeTags)) { result += addTag(newValues.isStatic ? 'static' : 'instance', null); }
+   if (newValues.memberof && !existing.memberof) { result += addTag('memberof', newValues.memberof); }
    return result;
 }
 
