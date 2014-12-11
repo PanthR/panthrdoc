@@ -56,7 +56,7 @@ exports.publish = function(data, opts) {
          }
       );
    });
-   
+
    Object.keys(modules).forEach(function(module) {
          var fileName = path.normalize('./docs/' + module + '.html');
          fs.writeFileSync(fileName, template(modules[module]), 'utf8');
@@ -70,15 +70,18 @@ exports.publish = function(data, opts) {
             modules[currentModule] = { module: entry, contents: [], allModules: modules };
             entries[makeShort(currentModule)] = true;
          }
+         if (modules[currentModule].module == null) {
+            modules[currentModule].module = entry;
+         }
       } else {
          targetModule = (entry.memberof || currentModule).replace('module:', '');
          if (modules[targetModule] == null) {
+            modules[targetModule] = { module: null, contents: [], allModules: modules };
             console.log("Working on entry: ", entry.longname, entry.name, entry.memberof);
             console.log("Could not find entry for module: ", targetModule);
-         } else {
-            modules[targetModule].contents.push(entry);
-            if (entry.fullName != null) { entries[makeShort(entry.fullName)] = true; }
          }
+         modules[targetModule].contents.push(entry);
+         if (entry.fullName != null) { entries[makeShort(entry.fullName)] = true; }
       }
    }
 };
