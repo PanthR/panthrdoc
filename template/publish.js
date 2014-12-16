@@ -62,6 +62,7 @@ exports.publish = function(data, opts) {
          fs.writeFileSync(fileName, template(modules[module]), 'utf8');
          console.log("Creating file: ", fileName);
    });
+   makeTeXVersion(modules, entries);
    function processEntry(entry) {
       var targetModule;
       if (entry.kind === 'module') {
@@ -85,5 +86,61 @@ exports.publish = function(data, opts) {
       }
    }
 };
+
+function makeTeXVersion(modules, entries) {
+   var templateFilename = path.join(process.cwd(), 'node_modules', 'panthrdoc', 'template', 'template.tex');
+   var template = Handlebars.compile(fs.readFileSync(templateFilename, 'utf8'));
+   var fileName = path.normalize('./docs/docs.tex');
+   fs.writeFileSync(fileName, postProcess(template({ modules: modules })), 'utf8');
+   console.log("Creating file: ", fileName);
+   function postProcess(s) {
+      var openTag = /^<(\w*)((?:.|\n)*?)>$/;
+      var closeTag = /^<\/(\w*?)>$/;
+      var stack = [], contents, currTag, currToken, m;
+      s.split(/(<.*?>)/g).forEach(function(token) {
+         if (closeTag.test(token)) {
+            contents = [];
+            currTag = token.match(closeTag)[1];
+            while (true) {
+               currToken = stack.pop();
+               if (currToken.tag !== null) {
+                  if (currToken.tag !== currTag) {
+                     throw new Error('Mismatched tags: ', currToken.tag, currTag);
+                  }
+                  stack.push({ tag: null, contents:
+                              processTag(currTag, currToken.rest, contents.join(''))
+                             });
+                  break;
+               } else {
+                  contents.unshift(currToken.contents);
+               }
+            }
+         } else if (openTag.test(token)) {
+            m = token.match(openTag);
+            stack.push({ tag: m[1], rest: m[2], contents: token });
+         } else {
+            stack.push({ tag: null, contents: token });
+         }
+      });
+      return stack.map(function(o) { return o.contents; }).join('')
+         .replace(/\|begin\|/g, '{').replace(/\|end\|/g, '}')
+         .replace(/[#_&%]/g, function(m) { return '\\' + m; });
+      function processTag(tag, rest, contents) {
+         switch (tag) {
+            case 'p'   : return contents + '\n\n';
+            case 'ul'  : return '\\begin{itemize}\n' + contents + '\\end{itemize}\n';
+            case 'li'  : return '\\item ' + contents + '\n';
+            case 'code': return '\\texttt{' + contents + '}';
+            case 'em'  : return '\\emph{' + contents + '}';
+            case 'pre': return '\\begin{lstlisting}\n' + contents +
+                               '\\end{lstlisting}\n';
+            case 'a':
+               //TODO
+               return contents;
+            default: console.log('Not handling tag: ', tag);
+         }
+      }
+   }
+}
 
 // TODO: Add plugin to sniff out entry kind

@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage[vmargin=1in,hmargin=1in]{geometry}
+\title{PanthRBase Documentation}
+\author{PanthR Team}
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+{{#each modules}}
+  \section|begin|{{module.name}}|end|
+  {{#each sortedContents}}
+  {{#if fullName}}
+    \subsection*|begin|{{fullName}}|end|
+    \addcontentsline{toc}{subsection}|begin|{{fullName}}|end|
+    {{{description}}}
+  {{/if}}
+  {{/each}}
+{{/each}}
+\end{document}
