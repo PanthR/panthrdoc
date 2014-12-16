@@ -2,7 +2,7 @@ var docEntries = {};
 exports.handlers = {
    parseBegin: function(e) {
       var ourFiles = reorderFiles(e.sourcefiles.filter(function(name) {
-         return /\/panthrBase.js|\/base\//.test(name);
+         return true;  // Should not be needed, but somehow makes a difference
       }));
       while(e.sourcefiles.length > 0) { e.sourcefiles.pop(); }
       ourFiles.forEach(function(s) { e.sourcefiles.push(s); });
