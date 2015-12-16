@@ -9,7 +9,7 @@ exports.handlers = {
       return e;
    },
    beforeParse: function(e) {
-      e.source = e.source.replace(/(\/\*\*(?:.|\n)*?)\*\/\s*\n(.*)$/mg, function(s, comment, code) {
+      e.source = e.source.replace(/(\/\*\*(?:.|\r?\n)*?)\*\/\s*\r?\n(.*)$/mg, function(s, comment, code) {
          var commentTags = processTags(comment);
          var procCode = processCode(code);
          return comment + '\n' + addTags(commentTags, procCode) + ' */\n' + code;
