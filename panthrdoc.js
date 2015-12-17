@@ -45,8 +45,8 @@ function processTags(s) {
 
 function processCode(s) {
    var constr = /^\s*function\s+(\w+)(\(.*\))/;
-   var method = /^\s*([\w\.]+)\s*\=\s*function\s*(?:\w*)(\([^\)]*\))/;
-   var member = /^\s*([\w\.]+)\s*\=/;
+   var method = /^\s*([\w\.]+)\s*[=:]\s*function\s*(?:\w*)(\([^\)]*\))/;
+   var member = /^\s*([\w\.]+)\s*[=:]/;
    var loader = /^\s*loader\.add(Class|Instance|Module)Method\(\'([\w\.]+)\'\,\s*\'(\w+)\'\,\s*function\s*\w*(\([^\)]*\))/;
    var match;
    if (constr.test(s)) {
