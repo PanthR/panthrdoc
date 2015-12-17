@@ -48,6 +48,7 @@ function processCode(s) {
    var method = /^\s*([\w\.]+)\s*[=:]\s*function\s*(?:\w*)(\([^\)]*\))/;
    var member = /^\s*([\w\.]+)\s*[=:]/;
    var loader = /^\s*loader\.add(Class|Instance|Module)Method\(\'([\w\.]+)\'\,\s*\'(\w+)\'\,\s*function\s*\w*(\([^\)]*\))/;
+   var requires = /^\s*require.*\/(\w+)'/
    var match;
    if (constr.test(s)) {
       match = s.match(constr);
@@ -76,6 +77,14 @@ function processCode(s) {
          fullName: match[2] + '.' + match[3] + match[4],
          isStatic: !(match[1] === 'Instance'),
          memberof: 'module:' + match[2]
+      }
+   } else if (requires.test(s)) {
+      match = s.match(requires);
+      return {
+         type: 'member',
+         name: match[1],
+         fullName: match[1],
+         isStatic: true
       }
    }
    return undefined;
