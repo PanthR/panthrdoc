@@ -5,12 +5,10 @@ var templateFilename = path.join(process.cwd(), 'node_modules', 'panthrdoc', 'te
 var template = Handlebars.compile(fs.readFileSync(templateFilename, 'utf8'));
 
 Handlebars.registerHelper('makeLink', makeLink);
-Handlebars.registerHelper('makeText', makeText);
 Handlebars.registerHelper('makeShort', makeShort);
 Handlebars.registerHelper('authorLinks', authorLinks);
 
-function makeText(text) { return text.replace(/(\.prototype|this)\./, '#'); };
-function makeShort(text) { return makeText(text).replace(/\(.*/, ''); };
+function makeShort(text) { return text.replace(/(\.?prototype|this)\./, '#').replace(/\(.*/, ''); };
 function makeLink(text) { return makeShort(text).replace(/#/, '%25'); };
 function authorLinks(text) {
    if (text == null) { return "unknown"; }
@@ -28,8 +26,13 @@ exports.publish = function(data, opts) {
    data(function() { return this.comment !== ''; })
    .each(processEntry);
    Object.keys(modules).forEach(function(module) {
+      var actualModule;
+      actualModule = modules[module].module;
       modules[module].contents.forEach(function(doclet) {
          if (doclet.description == null) { return; }
+         if (actualModule.hasOwnProperty('noPrefix')) {
+            doclet.fullName = doclet.fullName.replace(actualModule.name + '.', '');
+         }
          doclet.description = doclet.description.replace(/<code>(.*?)<\/code>/g, function(s, s1) {
             if (/^module:/.test(s1)) {
                return ['<a href = "', s1.replace(/^module:/, ''), '.html">',

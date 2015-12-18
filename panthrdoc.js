@@ -21,6 +21,9 @@ exports.defineTags = function(dictionary) {
    dictionary.defineTag('fullName', {
       onTagged: function(doclet, tag) { doclet.fullName = tag.value; }
    });
+   dictionary.defineTag('noPrefix', {
+      onTagged: function(doclet, tag) { doclet.noPrefix = tag.value; }
+   });
 }
 
 function reorderFiles(arr) {
