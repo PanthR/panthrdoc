@@ -31,6 +31,10 @@ exports.publish = function(data, opts) {
       modules[module].contents.forEach(function(doclet) {
          if (doclet.description == null) { return; }
          doclet.description = doclet.description.replace(/<code>(.*?)<\/code>/g, function(s, s1) {
+            if (/^module:/.test(s1)) {
+               return ['<a href = "', s1.replace(/^module:/, ''), '.html">',
+                       s.replace(/module:/, ''), '</a>'].join('');
+            }
             if (entries[makeShort(s1)]) {
                return ['<a href="#', makeLink(s1), '">', s, '</a>'].join('');
             }
