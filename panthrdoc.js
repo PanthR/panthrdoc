@@ -93,14 +93,24 @@ function processCode(s) {
    return undefined;
 }
 
+// return changes for the doclet description to add more tag information
 function addTags(existing, newValues) {
    if (newValues == null) { return ''; }
    var typeTags = ['class', 'module', 'method', 'member', 'function', 'func', 'kind'];
    var scopeTags = ['static', 'inner', 'instance', 'global'];
-   var result = addTag('fullName', newValues.fullName);
-   if (!hasAny(existing, typeTags)) { result += addTag(newValues.type, newValues.name); }
-   if (!hasAny(existing, scopeTags)) { result += addTag(newValues.isStatic ? 'static' : 'instance', null); }
-   if (newValues.memberof && !existing.memberof) { result += addTag('memberof', newValues.memberof); }
+   var result = '';
+   if (!existing.hasOwnProperty('fullName')) {
+      result += addTag('fullName', newValues.fullName);
+   }
+   if (!hasAny(existing, typeTags)) {
+      result += addTag(newValues.type, newValues.name);
+   }
+   if (!hasAny(existing, scopeTags)) {
+      result += addTag(newValues.isStatic ? 'static' : 'instance', null);
+   }
+   if (newValues.memberof && !existing.memberof) {
+      result += addTag('memberof', newValues.memberof);
+   }
    return result;
 }
 
