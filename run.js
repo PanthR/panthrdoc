@@ -1,6 +1,6 @@
 var path = require('path');
 var util = require('util');
-var exec = require('child_process').execFile;
+var spawn = require('win-spawn');
 var fs = require('fs');
 var projectDir = process.cwd();
 var packageDir = path.dirname(process.argv[1]);
@@ -10,6 +10,7 @@ var docFolder = path.join(projectDir, 'docs');
 var cssFile = path.join(docFolder, 'doc.css');
 var jsonDoc = path.join(packageDir, 'jsdoc.json');
 var baseCss = path.join(packageDir, 'template/doc.css');
+var jsdocProcess;
 
 if (!fs.existsSync(docFolder)) {
    console.log("Creating docs folder");
@@ -25,11 +26,22 @@ if (needsUpdate(cssFile, baseCss)) {
    fs.createReadStream(baseCss).pipe(fs.createWriteStream(cssFile));
 };
 
-exec(jsdocPath, ['-c', jsonDoc, target], function(error, stdout, stderr) {
-   if (error) {
-      console.log("Error calling jsdoc");
-      console.log(stderr);
-   } else {
-      console.log(stdout);
-   }
+jsdocProcess = spawn(jsdocPath, ['-c', jsonDoc, target]);
+
+jsdocProcess.stdout.on('data', function(data) {
+   console.log('stdout: ' + data);
 });
+jsdocProcess.stderr.on('data', function(data) {
+   console.log('stderr: ' + data);
+});
+jsdocProcess.on('close', function(code) {
+   console.log('jsdocError code:', code);
+});
+//    if (error) {
+//       console.log("Error calling jsdoc");
+//       console.log(stderr);
+//    } else {
+//       console.log(stdout);
+//    }
+// });
+

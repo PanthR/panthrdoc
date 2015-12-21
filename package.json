@@ -17,6 +17,7 @@
   "dependencies": {
     "handlebars": "^2.0.0-alpha.4",
     "jsdoc": "*",
-    "marked": "^0.3.2"
+    "marked": "^0.3.2",
+    "win-spawn": "*"
   }
 }
