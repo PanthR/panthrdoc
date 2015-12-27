@@ -177,3 +177,7 @@ a {
 a:hover {
    font-weight: bold;
 }
+
+.depth1 { margin-left: 1em; }
+.depth2 { margin-left: 2em; }
+.depth3 { margin-left: 3em; }

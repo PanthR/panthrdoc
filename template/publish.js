@@ -65,6 +65,15 @@ exports.publish = function(data, opts) {
          }
       );
    });
+   Object.keys(modules).forEach(function(module) {
+      console.log("module:", module);
+      // console.log("object:", modules[module]);
+      var entry = modules[module].module;
+      var parent = entry.memberof;
+      entry.depth = parent
+                  ? modules[parent.replace(/module:/, '')].module.depth + 1
+                  : 0;
+   });
 
    Object.keys(modules).forEach(function(module) {
          var fileName = path.normalize('./docs/' + module + '.html');
