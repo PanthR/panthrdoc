@@ -2,7 +2,9 @@ var Handlebars = require('handlebars');
 var fs = require('fs');
 var path = require('path');
 var templateFilename = path.join(process.cwd(), 'node_modules', 'panthrdoc', 'template', 'module.handlebars');
+var singlePageTemplateFilename = path.join(process.cwd(), 'node_modules', 'panthrdoc', 'template', 'singlePage.handlebars');
 var template = Handlebars.compile(fs.readFileSync(templateFilename, 'utf8'));
+var singlePageTemplate = Handlebars.compile(fs.readFileSync(singlePageTemplateFilename, 'utf8'));
 
 Handlebars.registerHelper('makeLink', makeLink);
 Handlebars.registerHelper('makeShort', makeShort);
@@ -35,10 +37,19 @@ exports.publish = function(data, opts) {
          if (actualModule.hasOwnProperty('noPrefix') && doclet.fullName) {
             doclet.fullName = doclet.fullName.replace(actualModule.name + '.', '');
          }
-         doclet.description = doclet.description.replace(/<code>(.*?)<\/code>/g, function(s, s1) {
+         doclet.multiPageDesc = doclet.description.replace(/<code>(.*?)<\/code>/g, function(s, s1) {
             if (/^module:/.test(s1)) {
                return ['<a href = "', s1.replace(/^module:/, ''), '.html">',
                        s.replace(/module:/, ''), '</a>'].join('');
+            }
+            if (entries[makeShort(s1)]) {
+               return ['<a href="#', makeLink(s1), '">', s, '</a>'].join('');
+            }
+            return s;
+         });
+         doclet.singlePageDesc = doclet.description.replace(/<code>(.*?)<\/code>/g, function(s, s1) {
+            if (/^module:/.test(s1)) {
+               return ['<a href="#', makeLink(s1), '">', s, '</a>'].join('');
             }
             if (entries[makeShort(s1)]) {
                return ['<a href="#', makeLink(s1), '">', s, '</a>'].join('');
@@ -80,6 +91,13 @@ exports.publish = function(data, opts) {
          fs.writeFileSync(fileName, template(modules[module]), 'utf8');
          console.log("Creating file: ", fileName);
    });
+   fs.writeFileSync(
+      path.normalize('./docs/singlePage.html'),
+      singlePageTemplate({
+         modules: modules,
+         main: modules[Object.keys(modules)[0]]
+      }),
+      'utf8');
    makeTeXVersion(modules, entries);
    function processEntry(entry) {
       var targetModule;

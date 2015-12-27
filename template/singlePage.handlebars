@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="doc.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <title>{{module.name}}</title>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+    </script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+  </head>
+  <body>
+    <div id="header">
+    <h1>Documentation for <code>{{main.module.name}}</code>
+      {{#if main.module.version}}<span class="version">(v{{main.module.version}})</span>{{/if}}
+      </h1>
+    </div>
+    <div id="sidebar">
+      <div>
+        <h3>Index</h3>
+      <ul>
+        {{#each modules}}
+        <a href="#{{module.name}}"><li class="depth{{module.depth}}"><code>{{module.name}}</code></li></a>
+        <ul>
+          {{#each sortedContents}}{{#if fullName}}
+          <a href="#{{makeLink fullName}}"><li><code>{{makeShort fullName}}</code></li></a>
+          {{/if}}{{/each}}
+        </ul>
+        {{/each}}
+      </ul>
+      </div>
+    </div>
+    <div id="main">
+      <div class="moduleInfo">
+        <h2>Module <code>{{main.module.name}}</code></h2>
+        <p>Author(s): {{{authorLinks module.author}}}<p>
+      </div>
+      {{#each modules}}
+        <div>
+          {{#if module.fullName}}
+          <h2 id="{{makeLink module.fullName}}"><code>{{module.fullName}}</code></h2>
+          {{else}}
+          <h2 id="{{makeLink module.name}}"><code>{{module.name}}</code></h2>
+          {{/if}}
+          {{{module.multiPageDesc}}}
+          {{#each sortedContents}}
+          <div>
+            {{#if fullName}}<h4 id="{{makeLink fullName}}"><code>{{fullName}}</code></h4>{{/if}}
+            {{{multiPageDesc}}}
+          </div>
+          {{/each}}
+        </div>
+      {{/each}}
+    </div>
+  </body>
+</html>
