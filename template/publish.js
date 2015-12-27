@@ -26,11 +26,13 @@ exports.publish = function(data, opts) {
    data(function() { return this.comment !== ''; })
    .each(processEntry);
    Object.keys(modules).forEach(function(module) {
-      var actualModule;
+      var actualModule, docletList;
       actualModule = modules[module].module;
-      modules[module].contents.forEach(function(doclet) {
+      docletList = modules[module].contents;
+      docletList.push(modules[module].module);
+      docletList.forEach(function(doclet) {
          if (doclet.description == null) { return; }
-         if (actualModule.hasOwnProperty('noPrefix')) {
+         if (actualModule.hasOwnProperty('noPrefix') && doclet.fullName) {
             doclet.fullName = doclet.fullName.replace(actualModule.name + '.', '');
          }
          doclet.description = doclet.description.replace(/<code>(.*?)<\/code>/g, function(s, s1) {
