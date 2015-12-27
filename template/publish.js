@@ -84,7 +84,7 @@ exports.publish = function(data, opts) {
             modules[currentModule].module = entry;
          }
       } else {
-         targetModule = (entry.memberof || currentModule).replace('module:', '');
+         targetModule = (entry.memberof || currentModule).replace(/.*module:/, '');
          if (modules[targetModule] == null) {
             modules[targetModule] = { module: null, contents: [], allModules: modules };
             console.log("Working on entry: ", entry.longname, entry.name, entry.memberof);
